@@ -132,6 +132,8 @@ dmypy.json
 # #Data
 *.csv
 !Data/GoodReads/books-small.csv
+!Data/GoodReads/books.csv
+!Data/GoodReads/book_tags.csv
 !Data/GoodReads/book_tags-small.csv
 !Data/GoodReads/tags.csv
 
