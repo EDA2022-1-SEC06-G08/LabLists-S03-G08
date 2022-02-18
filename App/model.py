@@ -52,11 +52,13 @@ def newCatalog():
                'book_tags': None}
 
     catalog['books'] = lt.newList('ARRAY_LIST')
-    catalog['authors'] = lt.newList('SINGLE_LINKED',
-                                    cmpfunction=compareauthors)
-    catalog['tags'] = lt.newList('SINGLE_LINKED',
-                                 cmpfunction=comparetagnames)
-    catalog['book_tags'] = lt.newList('ARRAY_LIST')
+    catalog['authors'] = lt.newList(
+        'SINGLE_LINKED', cmpfunction=compareauthors)
+    catalog['tags'] = lt.newList(
+        'SINGLE_LINKED',
+        cmpfunction=comparetagnames)
+    catalog['book_tags'] = lt.newList(
+        'SINGLE_LINKED')
 
     return catalog
 
@@ -69,7 +71,8 @@ def addBook(catalog, book):
     # Se obtienen los autores del libro
     authors = book['authors'].split(",")
     # Cada autor, se crea en la lista de libros del catalogo, y se
-    # crea un libro en la lista de dicho autor (apuntador al libro)
+    # crea un libro en la lista de dicho autor
+    # (apuntador al libro)
     for author in authors:
         addBookAuthor(catalog, author.strip(), book)
     return catalog
@@ -104,7 +107,9 @@ def addBookTag(catalog, booktag):
     """
     Adiciona un tag a la lista de tags
     """
-    t = newBookTag(booktag['tag_id'], booktag['goodreads_book_id'])
+    t = newBookTag(
+        booktag['tag_id'],
+        booktag['goodreads_book_id'])
     lt.addLast(catalog['book_tags'], t)
     return catalog
 
@@ -116,7 +121,10 @@ def newAuthor(name):
     Crea una nueva estructura para modelar los libros de
     un autor y su promedio de ratings
     """
-    author = {'name': "", "books": None,  "average_rating": 0}
+    author = {
+        'name': "",
+        "books": None,
+        "average_rating": 0}
     author['name'] = name
     author['books'] = lt.newList('ARRAY_LIST')
     return author
@@ -147,9 +155,11 @@ def getBooksByAuthor(catalog, authorname):
     """
     Retorna un autor con sus libros a partir del nombre del autor
     """
-    posauthor = lt.isPresent(catalog['authors'], authorname)
+    posauthor = lt.isPresent(
+        catalog['authors'], authorname)
     if posauthor > 0:
-        author = lt.getElement(catalog['authors'], posauthor)
+        author = lt.getElement(
+            catalog['authors'], posauthor)
         return author
     return None
 
@@ -160,7 +170,7 @@ def getBestBooks(catalog, number):
     """
     books = catalog['books']
     bestbooks = lt.newList()
-    for cont in range(1, number+1):
+    for cont in range(1, number + 1):
         book = lt.getElement(books, cont)
         lt.addLast(bestbooks, book)
     return bestbooks
@@ -176,7 +186,8 @@ def countBooksByTag(catalog, tag):
     if pos > 0:
         tag_element = lt.getElement(tags, pos)
         if tag_element is not None:
-            for book_tag in lt.iterator(catalog['book_tags']):
+            for book_tag in lt.iterator(
+                    catalog['book_tags']):
                 if tag_element['tag_id'] == book_tag['tag_id']:
                     bookcount += 1
     return bookcount
@@ -198,7 +209,8 @@ def bookTagSize(catalog):
     return lt.size(catalog['book_tags'])
 
 
-# Funciones utilizadas para comparar elementos dentro de una lista
+# Funciones utilizadas para comparar elementos dentro
+# de una lista
 
 def compareauthors(authorname1, author):
     if authorname1.lower() == author['name'].lower():
@@ -216,10 +228,14 @@ def comparetagnames(name, tag):
     return -1
 
 
-# funciones para comparar elementos dentro de algoritmos de ordenamientos
+# funciones para comparar elementos dentro de
+# algoritmos de ordenamientos
 
 def compareratings(book1, book2):
-    return (float(book1['average_rating']) > float(book2['average_rating']))
+    return (
+        float(
+            book1['average_rating']) > float(
+            book2['average_rating']))
 
 
 # Funciones de ordenamiento
